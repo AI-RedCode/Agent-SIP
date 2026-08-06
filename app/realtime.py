@@ -131,7 +131,14 @@ class RealtimeClient:
 
     async def send_audio(self, pcm24: bytes) -> None:
         if self.ws:
-            await self.ws.send(json.dumps({"type": "input_audio_buffer.append", "audio": base64.b64encode(pcm24).decode()}))
+            try:
+                await self.ws.send(json.dumps({"type": "input_audio_buffer.append", "audio": base64.b64encode(pcm24).decode()}))
+            except (
+                websockets.exceptions.ConnectionClosedOK,
+                websockets.exceptions.ConnectionClosedError,
+                websockets.exceptions.ConnectionClosed,
+            ):
+                return
 
     async def say(self, text: str) -> None:
         if not self.ws:

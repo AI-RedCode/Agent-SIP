@@ -4,6 +4,7 @@ import json
 import logging
 
 import pytest
+from websockets.exceptions import ConnectionClosedOK
 
 from app.calls import CLOSING, SAVING, CallManager, CallSession
 from app.config import VoiceConfig
@@ -31,6 +32,21 @@ class FakeWebSocket:
 
     async def close(self):
         pass
+
+
+@pytest.mark.asyncio
+async def test_send_audio_ignores_normal_websocket_close(caplog):
+    class ClosedWebSocket:
+        async def send(self, message):
+            raise ConnectionClosedOK(None, None)
+
+    client = RealtimeClient(VoiceConfig(), CallSession("x", "inbound", "1"), lambda _: None)
+    client.ws = ClosedWebSocket()
+
+    with caplog.at_level(logging.ERROR):
+        await client.send_audio(b"audio")
+
+    assert not caplog.records
 
 
 @pytest.mark.asyncio
