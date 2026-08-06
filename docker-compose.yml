@@ -1,0 +1,34 @@
+services:
+  agent-sip:
+    image: ghcr.io/ai-redcode/agent-sip:latest
+    network_mode: host
+    volumes:
+      - ./var:/app/var
+    environment:
+      # Set these in the shell or in a Compose .env file; see .env.docker.example.
+      SIP_SERVER_HOST: ${SIP_SERVER_HOST:-127.0.0.1}
+      SIP_USERNAME: ${SIP_USERNAME:-}
+      SIP_PASSWORD: ${SIP_PASSWORD:-}
+      SIP_ADVERTISE_HOST: ${SIP_ADVERTISE_HOST:-127.0.0.1}
+      VOICE_PROVIDER: ${VOICE_PROVIDER:-openai}
+      VOICE_API_KEY: ${VOICE_API_KEY:-}
+      VOICE_BASE_URL: ${VOICE_BASE_URL:-wss://api.openai.com/v1/realtime}
+      VOICE_MODEL: ${VOICE_MODEL:-gpt-realtime-2.1}
+      VOICE_VOICE: ${VOICE_VOICE:-marin}
+      MCP_HOST: ${MCP_HOST:-0.0.0.0}
+      MCP_PORT: ${MCP_PORT:-8765}
+      MCP_AUTH_TOKEN: ${MCP_AUTH_TOKEN:-}
+      WEBHOOK_URL: ${WEBHOOK_URL:-}
+      WEBHOOK_URL2: ${WEBHOOK_URL2:-}
+      WEBHOOK_AUTH_TOKEN: ${WEBHOOK_AUTH_TOKEN:-}
+      WEBHOOK_NOTIFY_PARTIALS_INCOMING: ${WEBHOOK_NOTIFY_PARTIALS_INCOMING:-false}
+      WEBHOOK_NOTIFY_PARTIALS_OUTGOING: ${WEBHOOK_NOTIFY_PARTIALS_OUTGOING:-true}
+      AGENT_NAME: ${AGENT_NAME:-Agent}
+      AGENT_CALLER_ID: ${AGENT_CALLER_ID:-}
+      AGENT_MAX_RINGS: ${AGENT_MAX_RINGS:-6}
+      AMBIENT_ENABLED: ${AMBIENT_ENABLED:-true}
+      AMBIENT_FILE: ${AMBIENT_FILE:-office.wav}
+      AMBIENT_VOLUME: ${AMBIENT_VOLUME:-0.39}
+      WEB_USERNAME: ${WEB_USERNAME:-admin}
+      WEB_PASSWORD: ${WEB_PASSWORD:-admin}
+    restart: unless-stopped

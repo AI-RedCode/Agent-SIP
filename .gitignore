@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+*.egg-info/
+# Runtime configuration may contain credentials. Keep only the safe template.
+var/
+!var/
+var/*
+!var/config.json.example
+var/config.json
+*.log
+.env
