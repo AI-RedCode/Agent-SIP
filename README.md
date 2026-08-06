@@ -42,13 +42,16 @@ _Select any screenshot to open the full-size image._
 Agent-SIP works best with Docker host networking because SIP/SDP embeds network addresses and RTP uses a UDP port range.
 
 ```bash
-docker pull ghcr.io/ai-redcode/agent-sip:latest
-cp .env.docker.example .env
+make setup   # creates .env from the template (first time)
+# edit .env: VOICE_API_KEY + your PBX details
+make up      # builds and starts
 ```
 
-Edit `.env` and, at minimum, provide your SIP server, extension credentials, reachable `SIP_ADVERTISE_HOST`, and `VOICE_API_KEY`. Then start the container:
+Without Make, use the published image directly. Edit `.env` and, at minimum, provide your SIP server, extension credentials, reachable `SIP_ADVERTISE_HOST`, and `VOICE_API_KEY`:
 
 ```bash
+docker pull ghcr.io/ai-redcode/agent-sip:latest
+cp .env.docker.example .env
 docker run -d --name agent-sip --network host --env-file .env \
   -v ./var:/app/var \
   ghcr.io/ai-redcode/agent-sip:latest
@@ -61,7 +64,7 @@ Open [http://localhost:8090](http://localhost:8090) and sign in with `admin` / `
 
 Host networking is required for the normal Docker setup: the PBX must be able to reach the SIP address and RTP ports advertised inside SDP. By default Agent-SIP uses TCP `8090` for the UI, TCP `8765` for MCP, UDP `5062` for SIP, and UDP `40000–40100` for RTP.
 
-Prefer Compose? After creating `.env`, run `docker compose up -d`.
+The Makefile prefers Docker Compose when available and falls back to the `docker run` command above when it is not.
 
 ## 🖥️ Web UI
 
