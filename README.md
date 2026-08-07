@@ -29,12 +29,6 @@ _Select any screenshot to open the full-size image._
 
 ![Agent-SIP architecture](docs/screenshots/architecture.jpg)
 
-Agent-SIP sits between your SIP server and OpenAI Realtime:
-
-- **SIP side** — registers as an extension on your PBX (FreePBX, Asterisk, 3CX…), handles SIP signaling (UDP) and RTP audio (PCMU/PCMA).
-- **OpenAI side** — connects to the Realtime API for natural speech (streaming audio, turn detection, transcription).
-- **Control plane** — a web UI (port 8090), MCP server (port 8765), and webhooks let you (or an AI agent like Hermes) make calls, steer conversations, and receive events.
-
 ## ✨ Features
 
 - **Real phone calls** through a SIP extension using UDP signaling and RTP audio (PCMU or PCMA).
